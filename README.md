@@ -1,4 +1,4 @@
-# RHEL-AUFS-Kernel: `kernel-ml` with AUFS Support
+# `kernel-ml-aufs`: `kernel-ml` with AUFS Support
 
 This repository contains the specfile and config files to build [kernel-ml](http://elrepo.org/tiki/kernel-ml) kernels that include AUFS for use with Docker. The Docker spec files that were part of the [original repo](https://github.com/sciurus/docker-rhel-rpm.git) are no longer included.
 
@@ -15,21 +15,21 @@ Other RHEL-derivatives should also work, but have not been tested.
 
 There are two methods for getting prebuilt packages:
 
-The first is to download them directly from [the Spaceduck.org Yum repo](https://yum.spaceduck.org/). Install the [.repo](https://yum.spaceduck.org/rhel-aufs-kernel/rhel-aufs-kernel.repo) file into `/etc/yum.repos.d` to get updates automatically.
+The first is to download them directly from [the Spaceduck.org Yum repo](https://yum.spaceduck.org/). Install the [.repo](https://yum.spaceduck.org/kernel-ml-aufs/kernel-ml-aufs.repo) file into `/etc/yum.repos.d` to get updates automatically.
 
 The second is to install the packages from Fedora Copr:
-* [.repo file for EL6](https://copr.fedoraproject.org/coprs/bnied/rhel-aufs-kernel/repo/epel-6/bnied-rhel-aufs-kernel-epel-6.repo)
-* [.repo file for EL7](https://copr.fedoraproject.org/coprs/bnied/rhel-aufs-kernel/repo/epel-7/bnied-rhel-aufs-kernel-epel-7.repo)
+* [.repo file for EL6](https://copr.fedorainfracloud.org/coprs/bnied/kernel-ml-aufs/repo/epel-6/bnied-kernel-ml-aufs-epel-6.repo)
+* [.repo file for EL7](https://copr.fedorainfracloud.org/coprs/bnied/kernel-ml-aufs/repo/epel-7/bnied-kernel-ml-aufs-epel-7.repo)
 
-The Copr repo is still being backfilled with old kernels, but all recent builds should be present, and identical to the `yum.spaceduck.org` packages.
+The Copr repo will only ever contain the most recently-built packages, where the spaceduck.org one should include historical RPMs as well. Please keep in mind that new packages are built as time allows, and that updates to this repo will often appear before the packages are built.
 
-Please keep in mind that new packages are built as time allows, and that updates to this repo will often appear before the packages are built.
+*If you want these packages to be your default kernel in GRUB*: edit `/etc/sysconfig/kernel`, and change `DEFAULTKERNEL` to `DEFAULTKERNEL=kernel-ml-aufs`.
 
 ***
 ## Building Packages
 ### Prerequisites
 
-Before building the packages, be sure to install [fedora-packager](https://dl.fedoraproject.org/pub/epel/6/x86_64/repoview/fedora-packager.html) and add yourself to the *mock* group.
+Before building the packages, be sure to install the `fedora-packager` package, and add yourself to the `mock` group. If you're on Fedora, `fedora-packager` will be available from the base repos. EL users will need to install from EPEL.
 
 Be aware that building the kernel can take a long time (at least half an hour, up to several hours if you're building on an older machine).
 
