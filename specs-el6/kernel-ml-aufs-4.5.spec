@@ -795,6 +795,9 @@ fi
 %endif
 
 %changelog
+* Tue Mar 15 2016 Ben Nied <spacewreckage@gmail.com> - 4.5.0-1
+- Added AUFS features for Kernel 4.5.
+
 * Mon Mar 14 2016 Alan Bartlett <ajb@elrepo.org> - 4.5.0-1
 - Updated with the 4.5 source tarball.
 
