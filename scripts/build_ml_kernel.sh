@@ -142,20 +142,20 @@ if [ -z "$SRPM_ONLY" ]; then
   mock -r epel-$EL_VERSION-$MOCK_ARCH --rebuild --resultdir rpms rpms/kernel-ml-aufs-$FULL_VERSION-1.$RPM_EL_VERSION.src.rpm > logs/rpm_generation.log 2>&1
   if [ $? -eq 0 ]; then
     echo "RPMs created successfully!"
+  else
+    echo "RPMs were not created successfully! See log for details."
+    exit 1
   fi
 fi
 
 # If we built the RPMs successfully, report that
 if [ $? -eq 0 ]; then
-  if [ ! -d ~/RPMs ]; then
+  if [ ! -d ~/RPMs/ml ]; then
     echo "Creating RPM directory..."
-    mkdir ~/RPMs 2>&1
+    mkdir -p ~/RPMs/ml 2>&1
   fi
-  echo "Moving to ~/RPMs..."
-  mv rpms/*.rpm ~/RPMs
+  echo "Moving to ~/RPMs/ml..."
+  mv rpms/*.rpm ~/RPMs/ml
   echo "Exiting..."
   exit 0
-else
-  echo "Binary RPM creation failed! See logs for details."
-  exit 1
 fi
