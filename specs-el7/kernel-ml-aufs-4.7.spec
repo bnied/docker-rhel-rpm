@@ -759,7 +759,7 @@ fi
 %files -n %{name}-tools-libs
 %defattr(-,root,root)
 %{_libdir}/libcpupower.so.0
-%{_libdir}/libcpupower.so.0.0.0
+%{_libdir}/libcpupower.so.0.0.1
 
 %files -n %{name}-tools-libs-devel
 %defattr(-,root,root)
