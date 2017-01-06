@@ -1,7 +1,7 @@
 %global __spec_install_pre %{___build_pre}
 
 # Define the version of the Linux Kernel Archive tarball.
-%define LKAver 4.9
+%define LKAver 4.9.1
 
 # Define the version of the aufs-standalone tarball
 %define AUFSver aufs-standalone
@@ -86,7 +86,7 @@
 %endif
 
 # Set pkg_release.
-%define pkg_release 2%{?buildid}%{?dist}
+%define pkg_release 1%{?buildid}%{?dist}
 
 #
 # Three sets of minimum package version requirements in the form of Conflicts.
