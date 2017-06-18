@@ -133,7 +133,7 @@ rm -rf aufs-standalone
 
 # Create our SRPM
 echo "Creating source RPM..."
-ln kernel-lt-aufs-$VERSION.spec kernel-ml-aufs.spec
+ln kernel-ml-aufs-$VERSION.spec kernel-ml-aufs.spec
 mock -r epel-$EL_VERSION-$MOCK_ARCH --buildsrpm --spec kernel-ml-aufs.spec --sources . --resultdir rpms > logs/srpm_generation.log 2>&1
 
 # If we built the SRPM successfully, report that
