@@ -97,7 +97,7 @@ echo "Creating build directory..."
 mkdir -p build/logs
 mkdir -p build/rpms
 echo "Copying spec file and config file(s) to build directory..."
-cp -a ../specs-el$EL_VERSION/kernel-ml-aufs-$VERSION.spec build/
+cp -a ../specs-el$EL_VERSION/kernel-ml-aufs-$VERSION.spec build/kernel-ml-aufs.spec
 cp -a ../configs-el$EL_VERSION/config-$FULL_VERSION-* build/
 if [ $EL_VERSION -eq 7 ]; then
   cp -a ../configs-el7/cpupower* build
@@ -133,7 +133,6 @@ rm -rf aufs-standalone
 
 # Create our SRPM
 echo "Creating source RPM..."
-ln kernel-ml-aufs-$VERSION.spec kernel-ml-aufs.spec
 mock -r epel-$EL_VERSION-$MOCK_ARCH --buildsrpm --spec kernel-ml-aufs.spec --sources . --resultdir rpms > logs/srpm_generation.log 2>&1
 
 # If we built the SRPM successfully, report that
