@@ -112,8 +112,14 @@ spectool -g -C . kernel-ml-aufs.spec > logs/spectool.log 2>&1
 
 # Clone the AUFS repo
 if [[ $VERSION =~ ^4 ]]; then
-  echo "Cloning AUFS 4.x..."
-  git clone git://github.com/sfjro/aufs4-standalone.git -b aufs$VERSION aufs-standalone > logs/aufs-git.log 2>&1
+  if [[ $VERSION == "4.11" ]]; then
+    echo "Cloning AUFS 4.11.0-untested..."
+    # 4.11 has a bug that breaks AUFS' local tests. Use the untested branch for now.
+    git clone git://github.com/sfjro/aufs4-standalone.git -b aufs4.11.0-untested aufs-standalone > logs/aufs-git.log 2>&1
+  else
+    echo "Cloning AUFS 4.x normally..."
+    git clone git://github.com/sfjro/aufs4-standalone.git -b aufs$VERSION aufs-standalone > logs/aufs-git.log 2>&1
+  fi
   # Workaround, in the event that the aufs$VERSION branch doesn't exist yet
   if [[ $? != 0 ]]; then
     git clone git://github.com/sfjro/aufs4-standalone.git -b aufs4.x-rcN aufs-standalone > logs/aufs-git.log 2>&1
