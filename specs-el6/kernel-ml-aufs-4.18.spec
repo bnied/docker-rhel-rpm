@@ -30,6 +30,9 @@
 # use dracut instead of mkinitrd
 %define with_dracut       %{?_without_dracut:       0} %{?!_without_dracut:       1}
 
+# Ignore unpackaged files
+%define _unpackaged_files_terminate_build 0
+
 # Build only the kernel-ml-aufs-doc & kernel-ml-aufs-firmware packages.
 %ifarch noarch
 %define with_std 0

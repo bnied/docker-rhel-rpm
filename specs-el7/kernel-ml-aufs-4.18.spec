@@ -24,6 +24,9 @@
 # tools
 %define with_tools   %{?_without_tools:   0} %{?!_without_tools:   1}
 
+# Ignore unpackaged files
+%define _unpackaged_files_terminate_build 0
+
 # These architectures install vdso/ directories.
 %define vdso_arches i686 x86_64
 
