@@ -334,6 +334,9 @@ popd > /dev/null
 
 %build
 BuildKernel() {
+    # Since our default compiler is no longer supported, we'll use gcc 4.9
+    # This means that you need to have devtoolset-3 enabled either on your system or in your mock location
+    source /opt/rh/devtoolset-3/enable
     Flavour=$1
 
     %{__make} -s distclean
