@@ -124,6 +124,10 @@ if [[ $VERSION =~ ^4 ]]; then
   if [[ $? != 0 ]]; then
     git clone git://github.com/sfjro/aufs4-standalone.git -b aufs4.x-rcN aufs-standalone > logs/aufs-git.log 2>&1
   fi
+elif [[ $VERSION =~ ^5 ]]; then
+  # Clone aufs 4.x-rcN until aufs5-standalone is ready
+  echo "Kernel 5.0 detected!"
+  git clone git://github.com/sfjro/aufs4-standalone.git -b aufs4.x-rcN aufs-standalone > logs/aufs-git.log 2>&1
 else
   echo "Cloning AUFS 3.x..."
   git clone git://git.code.sf.net/p/aufs/aufs3-standalone -b aufs$VERSION aufs-standalone > logs/aufs-git.log 2>&1
