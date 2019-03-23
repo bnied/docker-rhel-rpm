@@ -111,26 +111,14 @@ echo "Grabbing kernel source..."
 spectool -g -C . kernel-ml-aufs.spec > logs/spectool.log 2>&1
 
 # Clone the AUFS repo
-if [[ $VERSION =~ ^4 ]]; then
-  if [[ $VERSION == "4.20" ]]; then
-    echo "Cloning AUFS aufs4.20.4+..."
-    # 4.11 has a bug that breaks AUFS' local tests. Use the untested branch for now.
-    git clone git://github.com/sfjro/aufs4-standalone.git -b aufs4.20.4+ aufs-standalone > logs/aufs-git.log 2>&1
-  else
-    echo "Cloning AUFS 4.x normally..."
-    git clone git://github.com/sfjro/aufs4-standalone.git -b aufs$VERSION aufs-standalone > logs/aufs-git.log 2>&1
-  fi
+if [[ $VERSION =~ ^5 ]]; then
+  echo "Cloning AUFS 5.x normally..."
+  git clone git://github.com/sfjro/aufs5-standalone.git -b aufs$VERSION aufs-standalone > logs/aufs-git.log 2>&1
+
   # Workaround, in the event that the aufs$VERSION branch doesn't exist yet
   if [[ $? != 0 ]]; then
-    git clone git://github.com/sfjro/aufs4-standalone.git -b aufs4.x-rcN aufs-standalone > logs/aufs-git.log 2>&1
+    git clone git://github.com/sfjro/aufs5-standalone.git -b aufs5.x-rcN aufs-standalone > logs/aufs-git.log 2>&1
   fi
-elif [[ $VERSION =~ ^5 ]]; then
-  # Clone aufs 4.x-rcN until aufs5-standalone is ready
-  echo "Kernel 5.0 detected!"
-  git clone git://github.com/sfjro/aufs4-standalone.git -b aufs4.x-rcN aufs-standalone > logs/aufs-git.log 2>&1
-else
-  echo "Cloning AUFS 3.x..."
-  git clone git://git.code.sf.net/p/aufs/aufs3-standalone -b aufs$VERSION aufs-standalone > logs/aufs-git.log 2>&1
 fi
 
 # Get the HEAD commit from the aufs tree
