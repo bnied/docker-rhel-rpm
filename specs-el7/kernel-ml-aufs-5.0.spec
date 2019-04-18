@@ -285,20 +285,6 @@ patch -p 1 < ../%{AUFSver}/aufs5-mmap.patch
 
 %{__cp} %{SOURCE1} .
 
-# Run make listnewconfig over all the configuration files.
-%ifarch i686 || x86_64
-for C in config-*-%{_target_cpu}*
-do
-    %{__cp} $C .config
-    %{__make} -s ARCH=%{buildarch} listnewconfig | grep -E '^CONFIG_' > .newoptions || true
-    if [ -s .newoptions ]; then
-        cat .newoptions
-        exit 1
-    fi
-    %{__rm} .newoptions
-done
-%endif
-
 popd > /dev/null
 
 %build
