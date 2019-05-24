@@ -138,7 +138,7 @@ BuildRequires: redhat-rpm-config >= 9.1.0-55, sh-utils, tar, xmlto, xz
 %if %{with_perf}
 BuildRequires: audit-libs-devel, binutils-devel, bison, elfutils-devel
 BuildRequires: java-1.8.0-openjdk-devel, numactl-devel, perl(ExtUtils::Embed)
-BuildRequires: python-devel, slang-devel, xz-devel, zlib-devel
+BuildRequires: python36-devel, slang-devel, xz-devel, zlib-devel
 %endif
 %if %{with_tools}
 BuildRequires: gettext, ncurses-devel, pciutils-devel
@@ -214,10 +214,10 @@ License: GPLv2
 This package provides the perf tool and the supporting documentation
 for performance monitoring of the Linux kernel.
 
-%package -n python-perf
+%package -n python3-perf
 Summary: Python bindings for applications that will manipulate perf events.
 Group: Development/Libraries
-%description -n python-perf
+%description -n python3-perf
 This package provides a module that permits applications written in the
 Python programming language to use the interface to manipulate perf events.
 
@@ -712,7 +712,7 @@ fi
 %{_datadir}/doc/perf-tip/*
 %doc linux-%{version}-%{release}.%{_target_cpu}/tools/perf/Documentation/examples.txt
 
-%files -n python-perf
+%files -n python3-perf
 %defattr(-,root,root)
 %{python_sitearch}
 %endif
