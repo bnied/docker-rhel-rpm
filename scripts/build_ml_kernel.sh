@@ -128,9 +128,9 @@ rm -rf aufs-standalone
 
 # Select our mock config
 if [ $EL_VERSION -eq 8 ]; then
-  $MOCK_CONFIG = "rhelbeta-8-${MOCK_ARCH}"
+  MOCK_CONFIG="rhelbeta-8-${MOCK_ARCH}"
 else
-  $MOCK_CONFIG = "epel-${EL_VERSION}-${MOCK_ARCH}"
+  MOCK_CONFIG="epel-${EL_VERSION}-${MOCK_ARCH}"
 fi
 
 # Create our SRPM
