@@ -52,6 +52,7 @@
 %ifarch x86_64
 # 64-bit kernel-ml-aufs, headers, perf & tools.
 %define with_doc 0
+%define with_perf 0
 %endif
 
 # Determine the sublevel number and set pkg_version.
