@@ -138,7 +138,7 @@ BuildRequires: redhat-rpm-config >= 9.1.0-55, sh-utils, tar, xmlto, xz
 %if %{with_perf}
 BuildRequires: audit-libs-devel, binutils-devel, bison, elfutils-devel
 BuildRequires: java-1.8.0-openjdk-devel, numactl-devel, perl(ExtUtils::Embed)
-BuildRequires: python36-devel, slang-devel, xz-devel, zlib-devel
+BuildRequires: python36, python36-devel, slang-devel, xz-devel, zlib-devel
 %endif
 %if %{with_tools}
 BuildRequires: gettext, ncurses-devel, pciutils-devel
