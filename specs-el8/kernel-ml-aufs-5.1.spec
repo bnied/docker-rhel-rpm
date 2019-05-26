@@ -521,6 +521,7 @@ popd > /dev/null
 popd > /dev/null
 
 %install
+%define __brp_mangle_shebangs /usr/bin/true
 pushd linux-%{version}-%{release}.%{_target_cpu} > /dev/null
 
 %if %{with_headers}
