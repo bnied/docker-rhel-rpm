@@ -1,7 +1,7 @@
 %global __spec_install_pre %{___build_pre}
 
 # Define the version of the Linux Kernel Archive tarball.
-%define LKAver 5.1.5
+%define LKAver 5.1.6
 
 # Define the version of the aufs-standalone tarball
 %define AUFSver aufs-standalone
@@ -91,8 +91,10 @@
 #
 # Packages that need to be installed before the kernel because the %%post scripts make use of them.
 #
-%define kernel_prereq fileutils, module-init-tools >= 3.16-2, initscripts >= 8.11.1-1, grubby >= 8.28-2
-%define initrd_prereq dracut >= 001-7
+%define kernel_prereq coreutils, systemd >= 203-2, /usr/bin/kernel-install
+%define initrd_prereq dracut >= 027
+
+%define KVERREL %{version}-%{release}.%{_target_cpu}
 
 Name: kernel-ml-aufs
 Summary: The Linux kernel. (The core of any Linux-based operating system.)
@@ -105,21 +107,20 @@ ExclusiveArch: noarch x86_64
 ExclusiveOS: Linux
 Provides: kernel = %{version}-%{release}
 Provides: kernel-%{_target_cpu} = %{version}-%{release}
-Provides: kernel-uname-r = %{version}-%{release}.%{_target_cpu}
+Provides: kernel-uname-r = %{KVERREL}
 Provides: kernel-drm = 4.3.0
 Provides: kernel-drm-nouveau = 16
 Provides: kernel-modeset = 1
 Provides: %{name} = %{version}-%{release}
 Provides: %{name}-%{_target_cpu} = %{version}-%{release}
-Provides: %{name}-uname-r = %{version}-%{release}.%{_target_cpu}
+Provides: %{name}-uname-r = %{KVERREL}
 Provides: %{name}-drm = 4.3.0
 Provides: %{name}-drm-nouveau = 16
 Provides: %{name}-modeset = 1
 Requires(pre): %{kernel_prereq}
 Requires(pre): %{initrd_prereq}
-Requires(pre): linux-firmware >= 20100806-2
-Requires(post): %{_sbindir}/new-kernel-pkg
-Requires(preun): %{_sbindir}/new-kernel-pkg
+Requires(pre): linux-firmware >= 20150904-56.git6ebf5d57\
+Requires(preun): systemd >= 200\
 Conflicts: %{kernel_dot_org_conflicts}
 Conflicts: %{package_conflicts}
 # We can't let RPM do the dependencies automatically because it'll then pick up
@@ -162,10 +163,10 @@ Summary: Development package for building kernel modules to match the kernel.
 Group: System Environment/Kernel
 Provides: kernel-devel = %{version}-%{release}
 Provides: kernel-devel-%{_target_cpu} = %{version}-%{release}
-Provides: kernel-devel-uname-r = %{version}-%{release}.%{_target_cpu}
+Provides: kernel-devel-uname-r = %{KVERREL}
 Provides: %{name}-devel = %{version}-%{release}
 Provides: %{name}-devel-%{_target_cpu} = %{version}-%{release}
-Provides: %{name}-devel-uname-r = %{version}-%{release}.%{_target_cpu}
+Provides: %{name}-devel-uname-r = %{KVERREL}
 AutoReqProv: no
 Requires(pre): /usr/bin/find
 Requires: perl
@@ -272,10 +273,10 @@ libraries, derived from the kernel source.
 
 %prep
 %setup -q -n %{name}-%{version} -c
-%{__mv} linux-%{LKAver} linux-%{version}-%{release}.%{_target_cpu}
+%{__mv} linux-%{LKAver} linux-%{KVERREL}
 mkdir %{AUFSver}
 tar xf %{SOURCE4} -C %{AUFSver}
-pushd linux-%{version}-%{release}.%{_target_cpu} > /dev/null
+pushd linux-%{KVERREL} > /dev/null
 cp -r ../%{AUFSver}/Documentation/filesystems Documentation/
 cp -r ../%{AUFSver}/Documentation/ABI Documentation/
 cp -r ../%{AUFSver}/fs/aufs fs/
@@ -481,7 +482,7 @@ hwcap 1 nosegneg"
 %{__mkdir_p} $RPM_BUILD_ROOT/boot
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libexecdir}
 
-pushd linux-%{version}-%{release}.%{_target_cpu} > /dev/null
+pushd linux-%{KVERREL} > /dev/null
 
 %if %{with_default}
 BuildKernel
@@ -522,7 +523,7 @@ popd > /dev/null
 
 %install
 %define __brp_mangle_shebangs /usr/bin/true
-pushd linux-%{version}-%{release}.%{_target_cpu} > /dev/null
+pushd linux-%{KVERREL} > /dev/null
 
 %if %{with_headers}
 # We have to do the headers install before the tools install because the
@@ -606,19 +607,18 @@ popd > /dev/null
 # Scripts section.
 %if %{with_default}
 %posttrans
-%{_sbindir}/new-kernel-pkg --package %{name} --mkinitrd --dracut --depmod --update %{version}-%{release}.%{_target_cpu} || exit $?
-%{_sbindir}/new-kernel-pkg --package %{name} --rpmposttrans %{version}-%{release}.%{_target_cpu} || exit $?
 if [ -x %{_sbindir}/weak-modules ]; then
-    %{_sbindir}/weak-modules --add-kernel %{version}-%{release}.%{_target_cpu} || exit $?
+    %{_sbindir}/weak-modules --add-kernel %{KVERREL} || exit $?
 fi
+/bin/kernel-install add %{KVERREL}%{?1:+%{1}} /lib/modules/%{KVERREL}%{?1:+%{1}}/vmlinuz || exit $?
 
 %post
-%{_sbindir}/new-kernel-pkg --package %{name} --install %{version}-%{release}.%{_target_cpu} || exit $?
+/bin/kernel-install add %{KVERREL}%{?1:+%{1}} /lib/modules/%{KVERREL}%{?1:+%{1}}/vmlinuz || exit $?
 
 %preun
-%{_sbindir}/new-kernel-pkg --rminitrd --rmmoddep --remove %{version}-%{release}.%{_target_cpu} || exit $?
+/bin/kernel-install remove %{KVERREL}%{?1:+%{1}} /lib/modules/%{KVERREL}%{?1:+%{1}}/vmlinuz || exit $?
 if [ -x %{_sbindir}/weak-modules ]; then
-    %{_sbindir}/weak-modules --remove-kernel %{version}-%{release}.%{_target_cpu} || exit $?
+    %{_sbindir}/weak-modules --remove-kernel %{KVERREL} || exit $?
 fi
 
 %postun
@@ -634,7 +634,7 @@ if [ -f /etc/sysconfig/kernel ]; then
     . /etc/sysconfig/kernel || exit $?
 fi
 if [ "$HARDLINK" != "no" -a -x /usr/sbin/hardlink ]; then
-    pushd /usr/src/kernels/%{version}-%{release}.%{_target_cpu} > /dev/null
+    pushd /usr/src/kernels/%{KVERREL} > /dev/null
     /usr/bin/find . -type f | while read f; do
         /usr/sbin/hardlink -c /usr/src/kernels/*.fc*.*/$f $f
     done
@@ -654,28 +654,28 @@ fi
 %if %{with_default}
 %files
 %defattr(-,root,root)
-/boot/vmlinuz-%{version}-%{release}.%{_target_cpu}
-%attr(600,root,root) /boot/System.map-%{version}-%{release}.%{_target_cpu}
-/boot/symvers-%{version}-%{release}.%{_target_cpu}.gz
-/boot/config-%{version}-%{release}.%{_target_cpu}
-%dir /lib/modules/%{version}-%{release}.%{_target_cpu}
-/lib/modules/%{version}-%{release}.%{_target_cpu}/kernel
-/lib/modules/%{version}-%{release}.%{_target_cpu}/build
-/lib/modules/%{version}-%{release}.%{_target_cpu}/source
-/lib/modules/%{version}-%{release}.%{_target_cpu}/extra
-/lib/modules/%{version}-%{release}.%{_target_cpu}/updates
-/lib/modules/%{version}-%{release}.%{_target_cpu}/weak-updates
+/boot/vmlinuz-%{KVERREL}
+%attr(600,root,root) /boot/System.map-%{KVERREL}
+/boot/symvers-%{KVERREL}.gz
+/boot/config-%{KVERREL}
+%dir /lib/modules/%{KVERREL}
+/lib/modules/%{KVERREL}/kernel
+/lib/modules/%{KVERREL}/build
+/lib/modules/%{KVERREL}/source
+/lib/modules/%{KVERREL}/extra
+/lib/modules/%{KVERREL}/updates
+/lib/modules/%{KVERREL}/weak-updates
 %ifarch %{vdso_arches}
-/lib/modules/%{version}-%{release}.%{_target_cpu}/vdso
-/etc/ld.so.conf.d/%{name}-%{version}-%{release}.%{_target_cpu}.conf
+/lib/modules/%{KVERREL}/vdso
+/etc/ld.so.conf.d/%{name}-%{KVERREL}.conf
 %endif
-/lib/modules/%{version}-%{release}.%{_target_cpu}/modules.*
-%ghost /boot/initramfs-%{version}-%{release}.%{_target_cpu}.img
+/lib/modules/%{KVERREL}/modules.*
+%ghost /boot/initramfs-%{KVERREL}.img
 
 %files devel
 %defattr(-,root,root)
 %dir /usr/src/kernels
-/usr/src/kernels/%{version}-%{release}.%{_target_cpu}
+/usr/src/kernels/%{KVERREL}
 %endif
 
 %if %{with_headers}
@@ -712,7 +712,7 @@ fi
 %{_datadir}/perf-core/strace/groups/*
 %dir %{_datadir}/doc/perf-tip
 %{_datadir}/doc/perf-tip/*
-%doc linux-%{version}-%{release}.%{_target_cpu}/tools/perf/Documentation/examples.txt
+%doc linux-%{KVERREL}/tools/perf/Documentation/examples.txt
 
 %files -n python3-perf
 %defattr(-,root,root)
