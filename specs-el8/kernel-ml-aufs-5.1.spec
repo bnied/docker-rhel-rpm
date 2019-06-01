@@ -119,8 +119,8 @@ Provides: %{name}-drm-nouveau = 16
 Provides: %{name}-modeset = 1
 Requires(pre): %{kernel_prereq}
 Requires(pre): %{initrd_prereq}
-Requires(pre): linux-firmware >= 20150904-56.git6ebf5d57\
-Requires(preun): systemd >= 200\
+Requires(pre): linux-firmware >= 20150904-56.git6ebf5d57
+Requires(preun): systemd >= 200
 Conflicts: %{kernel_dot_org_conflicts}
 Conflicts: %{package_conflicts}
 # We can't let RPM do the dependencies automatically because it'll then pick up
