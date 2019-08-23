@@ -348,7 +348,7 @@ of the OS: memory allocation, process allocation, device I/O, etc.
 %setup -q -n %{name}-%{version} -c
 %{__mv} linux-%{LKAver} linux-%{KVERREL}
 mkdir %{AUFSver}
-tar xf %{SOURCE4} -C %{AUFSver}
+tar xf %{SOURCE10} -C %{AUFSver}
 
 pushd linux-%{KVERREL} > /dev/null
 
