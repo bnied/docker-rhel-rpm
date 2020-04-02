@@ -81,7 +81,7 @@ ExclusiveOS: Linux
 Requires: %{name}-core-uname-r = %{KVERREL}
 Requires: %{name}-modules-uname-r = %{KVERREL}
 BuildRequires: bash bc binutils bison bzip2 diffutils elfutils-devel findutils
-BuildRequires: flex gawk gcc git gzip hmaccalc hostname kmod m4 make net-tools
+BuildRequires: flex gawk gcc git gzip hmaccalc hostname kmod libcap-devel m4 make net-tools
 BuildRequires: openssl openssl-devel patch perl-Carp perl-devel perl-generators
 BuildRequires: perl-interpreter python3-devel redhat-rpm-config rsync sh-utils tar xz
 %if %{with_doc}
