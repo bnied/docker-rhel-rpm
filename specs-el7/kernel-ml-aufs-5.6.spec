@@ -131,7 +131,7 @@ AutoProv: yes
 # List the packages used during the kernel-ml-aufs build.
 #
 BuildRequires: asciidoc, bash >= 2.03, bc, binutils >= 2.12, diffutils
-BuildRequires: findutils, gawk, gcc >= 3.4.2 gzip, hostname, m4
+BuildRequires: findutils, gawk, gcc >= 3.4.2 gzip, hostname, libcap-devel, m4
 BuildRequires: make >= 3.78, module-init-tools, net-tools, newt-devel
 BuildRequires: openssl, openssl-devel, patch >= 2.5.4, perl
 BuildRequires: redhat-rpm-config >= 9.1.0-55, sh-utils, tar, xmlto, xz
