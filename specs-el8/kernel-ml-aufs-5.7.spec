@@ -1002,6 +1002,7 @@ fi
 %{_bindir}/lsgpio
 %{_bindir}/gpio-hammer
 %{_bindir}/gpio-event-mon
+%{_bindir}/gpio-watch
 %{_bindir}/kvm_stat
 %config(noreplace) %{_sysconfdir}/sysconfig/cpupower
 %{_unitdir}/cpupower.service
