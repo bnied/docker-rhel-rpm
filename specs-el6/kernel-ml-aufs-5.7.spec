@@ -166,7 +166,7 @@ BuildRequires: module-init-tools, net-tools, patch >= 2.5.4, patchutils, perl
 BuildRequires: redhat-rpm-config, rpm-build >= 4.8.0-7, sh-utils, tar, xmlto
 %if %{with_perf}
 BuildRequires: audit-libs-devel, binutils-devel, bison, elfutils-devel
-BuildRequires: elfutils-libelf-devel, gtk2-devel, newt-devel, numactl-devel
+BuildRequires: elfutils-libelf-devel, gtk2-devel, newt-devel, numactl-devel, python34
 BuildRequires: perl(ExtUtils::Embed), python-devel, xz-devel, zlib-devel, openssl-devel
 %endif
 BuildRequires: python
