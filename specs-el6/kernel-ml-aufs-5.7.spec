@@ -162,12 +162,13 @@ AutoProv: yes
 # List the packages used during the kernel-ml-aufs build.
 #
 BuildRequires: asciidoc, bash >= 2.03, bc, binutils >= 2.12, bzip2, diffutils
+BuildRequires: elfutils-devel, elfutils-libelf-devel
 BuildRequires: findutils, gawk, gcc >= 3.4.2, gzip, m4, make >= 3.78
 BuildRequires: module-init-tools, net-tools, patch >= 2.5.4, patchutils, perl
 BuildRequires: redhat-rpm-config, rpm-build >= 4.8.0-7, sh-utils, tar, xmlto
 %if %{with_perf}
-BuildRequires: audit-libs-devel, binutils-devel, bison, elfutils-devel
-BuildRequires: elfutils-libelf-devel, gtk2-devel, newt-devel, numactl-devel, python34
+BuildRequires: audit-libs-devel, binutils-devel, bison
+BuildRequires: gtk2-devel, newt-devel, numactl-devel, python34
 BuildRequires: perl(ExtUtils::Embed), python-devel, xz-devel, zlib-devel, openssl-devel
 %endif
 BuildRequires: python
