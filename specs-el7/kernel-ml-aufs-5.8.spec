@@ -3,6 +3,9 @@
 # Define the version of the Linux Kernel Archive tarball.
 %define LKAver 5.8.11
 
+# Define the version of the aufs-standalone tarball
+%define AUFSver aufs-standalone
+
 # Define the buildid, if required.
 #define buildid .local
 
