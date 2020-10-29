@@ -299,19 +299,8 @@ patch -p 1 < ../%{AUFSver}/aufs5-mmap.patch
 
 %{__cp} %{SOURCE1} .
 
-# Run make listnewconfig over all the configuration files.
-%ifarch i686 || x86_64
-for C in config-*-%{_target_cpu}*
-do
-    %{__cp} $C .config
-    %{__make} -s ARCH=%{buildarch} listnewconfig | %{_bindir}/grep -E '^CONFIG_' > .newoptions || true
-    if [ -s .newoptions ]; then
-        cat .newoptions
-        exit 1
-    fi
-    %{__rm} -f .newoptions
-done
-%endif
+# Dirty hack
+%{__make} -s ARCH=%{buildarch} olddefconfig
 
 popd > /dev/null
 
@@ -336,9 +325,7 @@ BuildKernel() {
 
     # Set the EXTRAVERSION string in the top level Makefile.
     %{__sed} -i "s/^EXTRAVERSION.*/EXTRAVERSION = -%{release}${Flavour}.%{_target_cpu}/" Makefile
-    
-    # Dirty hack
-    %{__make} -s ARCH=%{buildarch} olddefconfig
+
 
     %{__make} -s ARCH=%{buildarch} oldconfig
 
