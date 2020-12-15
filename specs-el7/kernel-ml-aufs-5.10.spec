@@ -1,10 +1,13 @@
 %global __spec_install_pre %{___build_pre}
 
 # Define the version of the Linux Kernel Archive tarball.
-%define LKAver 5.9.14
+%define LKAver 5.10.1
 
 # Define the version of the aufs-standalone tarball
 %define AUFSver aufs-standalone
+
+# Define AUFS patch directory
+%define AUFSpatchdir /opt/aufs-5.10-changed-files/patches/5.10
 
 # Define the buildid, if required.
 #define buildid .local
@@ -293,6 +296,7 @@ cp ../%{AUFSver}/include/uapi/linux/aufs_type.h include/uapi/linux/
 patch -p 1 < ../%{AUFSver}/aufs5-kbuild.patch
 patch -p 1 < ../%{AUFSver}/aufs5-base.patch
 patch -p 1 < ../%{AUFSver}/aufs5-mmap.patch
+patch -p 1 < %{AUFSpatchdir}/k510.patch
 
 # Purge the source tree of all unrequired dot-files.
 %{_bindir}/find -name '.[a-z]*' | %{_bindir}/xargs --no-run-if-empty %{__rm} -rf
