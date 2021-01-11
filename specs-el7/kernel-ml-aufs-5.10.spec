@@ -65,7 +65,7 @@
 %endif
 
 # Set pkg_release.
-%define pkg_release 1%{?buildid}%{?dist}
+%define pkg_release %{lua:print(os.getenv("RELEASE_VERSION"))}%{?dist}%{?buildid}
 
 #
 # Three sets of minimum package version requirements in the form of Conflicts.
